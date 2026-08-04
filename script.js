@@ -57,12 +57,8 @@
       // let the flap swing open first, then lift the card out
       window.setTimeout(function () {
         cardPeek.classList.add('is-out');
-      }, 550);
-
-      // let "We're Engaged" sit on screen for a while before offering the CTA
-      window.setTimeout(function () {
         if (joinCta) joinCta.classList.add('is-visible');
-      }, 3600);
+      }, 550);
     }
 
     function goToInvitation() {
