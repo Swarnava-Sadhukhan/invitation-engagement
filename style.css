@@ -469,6 +469,14 @@ button {
   color: var(--cream);
 }
 
+.invite-message,
+.invite-bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(16px);
@@ -615,6 +623,13 @@ button {
 /* ============================================================
    Small screens fine-tuning
    ============================================================ */
+
+@media (max-width: 640px) {
+  .invite-content {
+    justify-content: space-between;
+    padding-top: 52px;
+  }
+}
 
 @media (max-height: 640px) {
   .invite-details { gap: 7px; }
