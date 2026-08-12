@@ -6,7 +6,6 @@
   // ---------------------------------------------------------
   function initVideoIntro() {
     var stage = document.getElementById('videoStage');
-    var videoBg = document.getElementById('introVideoBg');
     var videoFg = document.getElementById('introVideo');
     var videoScene = document.getElementById('video-scene');
     var invitationScene = document.getElementById('invitation-scene');
@@ -19,7 +18,6 @@
         try { video.currentTime = 0.01; } catch (e) { /* ignore */ }
       });
     }
-    paintFirstFrame(videoBg);
     paintFirstFrame(videoFg);
 
     var started = false;
@@ -28,7 +26,6 @@
       if (started) return;
       started = true;
 
-      videoBg.play();
       videoFg.play();
     }
 
