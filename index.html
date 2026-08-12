@@ -8,55 +8,165 @@
 <meta name="description" content="You're invited to celebrate the engagement of Swarnava &amp; Atreyee">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Playfair+Display:ital,wght@1,700;1,800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-video.css">
 </head>
 <body>
 
-<div class="petals" aria-hidden="true" id="petals"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="heartClip" clipPathUnits="objectBoundingBox">
+      <path d="M0.5,0.98 C0.5,0.98 0.08,0.64 0.04,0.4 C0.01,0.2 0.13,0.03 0.31,0.03 C0.41,0.03 0.5,0.09 0.5,0.19 C0.5,0.09 0.59,0.03 0.69,0.03 C0.87,0.03 0.99,0.2 0.96,0.4 C0.92,0.64 0.5,0.98 0.5,0.98 Z"/>
+    </clipPath>
+  </defs>
+</svg>
 
-<!-- ===== ENVELOPE SCENE ===== -->
-<section id="envelope-scene" class="scene is-active">
-  <div class="envelope-scene-inner">
-    <p class="pretitle">You are cordially invited</p>
+<!-- ===== VIDEO SCENE ===== -->
+<section id="video-scene" class="scene is-active">
+  <div class="video-stage" id="videoStage" role="button" tabindex="0" aria-label="Play to open your invitation">
+    <video class="video-bg" id="introVideoBg" src="assets/1000342559.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+    <video class="video-fg" id="introVideo" src="assets/1000342559.mp4" muted playsinline preload="auto"></video>
+  </div>
+</section>
 
-    <div class="envelope-wrap" id="envelopeWrap">
-      <div class="envelope" id="envelope">
-        <div class="envelope-back"></div>
+<!-- ===== INVITATION SCENE (scrollable) ===== -->
+<section id="invitation-scene" class="scene">
 
-        <div class="card-peek" id="cardPeek">
-          <div class="card-peek-inner">
-            <span class="peek-heart">&#10084;</span>
-            <p class="peek-text">We're&nbsp;Engaged</p>
-          </div>
+  <!-- Section 1: handwritten note -->
+  <section class="note-section has-card-bg">
+    <div class="note-frame">
+      <img class="note-frame-img" src="assets/card-template.jpg" alt="" aria-hidden="true">
+
+      <div class="note-card">
+        <div class="note-divider reveal" style="--d:0" aria-hidden="true">
+          <span class="line"></span><span class="mark">&#10084;</span><span class="line"></span>
         </div>
 
-        <div class="envelope-flap envelope-flap-left"></div>
-        <div class="envelope-flap envelope-flap-right"></div>
-        <div class="envelope-flap envelope-flap-bottom"></div>
-        <div class="envelope-flap envelope-flap-top">
-          <button class="wax-seal" id="waxSeal" aria-label="Open your invitation">
-            <span class="wax-seal-ring"></span>
-            <span class="wax-seal-monogram">A&nbsp;&amp;&nbsp;S</span>
-          </button>
+        <div class="note-body">
+          <p class="note-names reveal" style="--d:1">Swarnava <span class="amp">&amp;</span> Atreyee</p>
+          <p class="note-message reveal" style="--d:2">are getting engaged! We cordially invite you to celebrate this beautiful beginning with us at our engagement ceremony.</p>
+        </div>
+
+        <div class="note-divider reveal" style="--d:3" aria-hidden="true">
+          <span class="line"></span><span class="mark">&#10084;</span><span class="line"></span>
         </div>
       </div>
     </div>
 
-    <p class="tap-hint" id="tapHint">Tap the seal to open</p>
+    <div class="scroll-hint">
+      <span class="scroll-hint-arrow"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></span>
+      <span class="scroll-hint-text">Scroll down</span>
+    </div>
+  </section>
 
-    <button class="join-cta" id="joinCta" aria-label="Continue to the invitation">
-      Join us in the celebration
-    </button>
-  </div>
-</section>
+  <!-- Section 2: scratch-to-reveal the date -->
+  <section class="scratch-section has-card-bg">
+    <p class="scratch-title reveal" style="--d:0">Scratch to reveal our special day</p>
 
-<!-- ===== INVITATION SCENE ===== -->
-<section id="invitation-scene" class="scene">
+    <div class="scratch-row" id="scratchRow">
+      <div class="scratch-item" data-part="day">
+        <div class="scratch-heart-wrap">
+          <div class="scratch-heart">
+            <div class="scratch-reveal"><span class="scratch-reveal-value">24</span></div>
+            <canvas class="scratch-canvas"></canvas>
+          </div>
+          <svg class="scratch-heart-outline" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0.5,0.98 C0.5,0.98 0.08,0.64 0.04,0.4 C0.01,0.2 0.13,0.03 0.31,0.03 C0.41,0.03 0.5,0.09 0.5,0.19 C0.5,0.09 0.59,0.03 0.69,0.03 C0.87,0.03 0.99,0.2 0.96,0.4 C0.92,0.64 0.5,0.98 0.5,0.98 Z"/>
+          </svg>
+        </div>
+        <p class="scratch-item-label">Day</p>
+      </div>
+      <div class="scratch-item" data-part="month">
+        <div class="scratch-heart-wrap">
+          <div class="scratch-heart">
+            <div class="scratch-reveal"><span class="scratch-reveal-value">Nov</span></div>
+            <canvas class="scratch-canvas"></canvas>
+          </div>
+          <svg class="scratch-heart-outline" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0.5,0.98 C0.5,0.98 0.08,0.64 0.04,0.4 C0.01,0.2 0.13,0.03 0.31,0.03 C0.41,0.03 0.5,0.09 0.5,0.19 C0.5,0.09 0.59,0.03 0.69,0.03 C0.87,0.03 0.99,0.2 0.96,0.4 C0.92,0.64 0.5,0.98 0.5,0.98 Z"/>
+          </svg>
+        </div>
+        <p class="scratch-item-label">Month</p>
+      </div>
+      <div class="scratch-item" data-part="year">
+        <div class="scratch-heart-wrap">
+          <div class="scratch-heart">
+            <div class="scratch-reveal"><span class="scratch-reveal-value">2026</span></div>
+            <canvas class="scratch-canvas"></canvas>
+          </div>
+          <svg class="scratch-heart-outline" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0.5,0.98 C0.5,0.98 0.08,0.64 0.04,0.4 C0.01,0.2 0.13,0.03 0.31,0.03 C0.41,0.03 0.5,0.09 0.5,0.19 C0.5,0.09 0.59,0.03 0.69,0.03 C0.87,0.03 0.99,0.2 0.96,0.4 C0.92,0.64 0.5,0.98 0.5,0.98 Z"/>
+          </svg>
+        </div>
+        <p class="scratch-item-label">Year</p>
+      </div>
+    </div>
+
+    <p class="scratch-result" id="scratchResult">Tuesday, 24th November 2026 &mdash; save the date!</p>
+
+    <div class="scroll-hint" id="scratchScrollHint">
+      <span class="scroll-hint-arrow"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></span>
+      <span class="scroll-hint-text">Scroll down</span>
+    </div>
+
+    <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+  </section>
+
+  <!-- Section 3: our journey so far -->
+  <section class="journey-section has-card-bg">
+    <p class="journey-title reveal" style="--d:0">Our Journey So Far</p>
+
+    <div class="journey-track" id="journeyTrack">
+      <div class="polaroid-slide">
+        <div class="polaroid">
+          <img src="assets/1000278425.jpg" alt="Swarnava and Atreyee" draggable="false">
+          <p class="polaroid-caption">Where it all began</p>
+        </div>
+      </div>
+      <div class="polaroid-slide">
+        <div class="polaroid">
+          <img src="assets/1000278425.jpg" alt="Swarnava and Atreyee" draggable="false">
+          <p class="polaroid-caption">Our first trip together</p>
+        </div>
+      </div>
+      <div class="polaroid-slide">
+        <div class="polaroid">
+          <img src="assets/1000278425.jpg" alt="Swarnava and Atreyee" draggable="false">
+          <p class="polaroid-caption">Laughing through every season</p>
+        </div>
+      </div>
+      <div class="polaroid-slide">
+        <div class="polaroid">
+          <img src="assets/1000278425.jpg" alt="Swarnava and Atreyee" draggable="false">
+          <p class="polaroid-caption">Meeting the families</p>
+        </div>
+      </div>
+      <div class="polaroid-slide">
+        <div class="polaroid">
+          <img src="assets/1000278425.jpg" alt="Swarnava and Atreyee" draggable="false">
+          <p class="polaroid-caption">And now, forever begins</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="swipe-hint">&larr; Swipe to see more &rarr;</p>
+
+    <div class="journey-dots" id="journeyDots">
+      <span class="journey-dot"></span>
+      <span class="journey-dot"></span>
+      <span class="journey-dot"></span>
+      <span class="journey-dot"></span>
+      <span class="journey-dot"></span>
+    </div>
+
+    <div class="scroll-hint">
+      <span class="scroll-hint-arrow"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></span>
+      <span class="scroll-hint-text">Scroll down</span>
+    </div>
+  </section>
+
+  <!-- Section 4: event details -->
   <div class="invite-card">
-    <img class="invite-photo" src="assets/1000278425.jpg" alt="Swarnava and Atreyee">
-    <div class="invite-scrim"></div>
-
     <svg class="corner-flourish corner-flourish--tl" viewBox="0 0 120 120" aria-hidden="true">
       <path d="M4 60 C4 28 28 4 60 4" fill="none" stroke="currentColor" stroke-width="1.2"/>
       <circle cx="60" cy="4" r="3" fill="currentColor"/>
@@ -107,19 +217,26 @@
             </span>
             <div class="detail-text">
               <p class="detail-label">Venue</p>
-              <p class="detail-value">
-                <a class="venue-link" href="https://maps.app.goo.gl/7hy6KSyrhSqdkBfY6" target="_blank" rel="noopener noreferrer">Glook &ndash; The Sky Lounge, Newtown, Kolkata</a>
-              </p>
+              <a class="venue-cta" href="https://maps.app.goo.gl/7hy6KSyrhSqdkBfY6" target="_blank" rel="noopener noreferrer">
+                Glook &ndash; The Sky Lounge, Newtown, Kolkata
+                <svg class="venue-cta-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+              </a>
             </div>
           </div>
         </div>
+
+        <button class="save-date-btn" id="saveDateBtn" type="button">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8.5 14.5l1.5 1.5 3-3.5" stroke-width="1.8"/></svg>
+          Save the Date
+        </button>
 
         <p class="invite-closing reveal" style="--d:5">Your presence is the greatest gift of all.<br>We can't wait to celebrate this beautiful beginning with you.</p>
       </div>
     </div>
   </div>
+
 </section>
 
-<script src="script.js"></script>
+<script src="script-video.js"></script>
 </body>
 </html>

@@ -1,0 +1,803 @@
+/* ============================================================
+   Swarnava & Atreyee — Engagement Invitation (video intro)
+   ============================================================ */
+
+:root {
+  --blush: #f9dbe1;
+  --blush-soft: #fdeef1;
+  --blush-deep: #e8a5b6;
+  --rose: #c96f83;
+  --rose-deep: #a94f66;
+  --gold: #cda45e;
+  --gold-soft: #e6c98a;
+  --cream: #fffaf6;
+  --beige: #f3e7d3;
+  --ink: #5a3b42;
+  --ink-soft: #8a6068;
+
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-display: 'Playfair Display', serif;
+  --font-sans: 'Poppins', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  min-height: 100%;
+  margin: 0;
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  background: radial-gradient(circle at 50% 0%, var(--blush-soft) 0%, var(--blush) 55%, var(--blush-deep) 100%);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ============================================================
+   Scenes
+   ============================================================ */
+
+.scene {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0;
+}
+
+.scene.is-active {
+  display: flex;
+}
+
+#invitation-scene.is-active {
+  display: block;
+  min-height: 0;
+}
+
+/* ============================================================
+   Video scene
+   ============================================================ */
+
+#video-scene.is-active {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+#video-scene.is-fading {
+  opacity: 0;
+  transition: opacity 1.4s ease;
+  pointer-events: none;
+}
+
+.video-stage {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+}
+
+.video-bg,
+.video-fg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-bg {
+  inset: -20px;
+  width: calc(100% + 40px);
+  height: calc(100% + 40px);
+  object-fit: cover;
+  filter: blur(35px) brightness(0.55);
+  transform: scale(1.15);
+  z-index: 1;
+}
+
+.video-fg {
+  object-fit: contain;
+  z-index: 2;
+}
+
+/* ============================================================
+   Decorative card backdrop (shared)
+   ============================================================ */
+
+.has-card-bg {
+  overflow: hidden;
+}
+
+.has-card-bg::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  z-index: 0;
+  background-image: url('assets/card-template.jpg');
+  background-size: cover;
+  background-position: center 30%;
+  filter: blur(45px) brightness(1.05) saturate(1.05);
+  transform: scale(1.15);
+}
+
+.has-card-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   Note section
+   ============================================================ */
+
+.note-section {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.note-frame {
+  position: relative;
+  z-index: 1;
+  height: min(86dvh, 760px);
+  max-width: 92vw;
+  aspect-ratio: 736 / 1030;
+  container-type: size;
+  filter: drop-shadow(0 20px 44px rgba(90, 40, 55, 0.4));
+}
+
+.note-frame-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.note-card {
+  position: absolute;
+  top: 18%;
+  left: 9%;
+  right: 9%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.note-divider {
+  display: flex;
+  align-items: center;
+  gap: 3.5cqw;
+  width: 60%;
+  max-width: 240px;
+  margin: 2cqh 0;
+}
+
+.note-divider .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--rose-deep), transparent);
+}
+
+.note-divider .mark {
+  color: var(--rose);
+  font-size: 3.4cqw;
+}
+
+.note-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.note-names {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: 9.5cqw;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+  color: var(--rose-deep);
+  margin: 0 0 1.6cqh;
+}
+
+.note-names .amp {
+  color: var(--gold);
+}
+
+.note-message {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 3.9cqw;
+  line-height: 1.45;
+  color: var(--ink);
+  margin: 0;
+  max-width: 80cqw;
+}
+
+/* ============================================================
+   Scroll hint (shared)
+   ============================================================ */
+
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--ink-soft);
+  transition: opacity 0.5s ease;
+}
+
+.scroll-hint-arrow {
+  display: flex;
+  animation: scrollBounce 1.8s ease-in-out infinite;
+}
+
+.scroll-hint-text {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(8px); }
+}
+
+#scratchScrollHint {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#scratchScrollHint.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ============================================================
+   Scratch section
+   ============================================================ */
+
+.scratch-section {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 60px 14px;
+  overflow: hidden;
+}
+
+.scratch-title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(24px, 5.6vw, 32px);
+  color: var(--rose-deep);
+  text-align: center;
+  margin: 0;
+}
+
+.scratch-row {
+  display: flex;
+  justify-content: center;
+  gap: clamp(8px, 2.2vw, 18px);
+}
+
+.scratch-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.scratch-heart-wrap {
+  position: relative;
+  width: clamp(120px, 34vw, 220px);
+  height: clamp(120px, 34vw, 220px);
+  filter: drop-shadow(0 8px 16px rgba(169, 79, 102, 0.28));
+}
+
+.scratch-heart {
+  position: absolute;
+  inset: 0;
+  clip-path: url(#heartClip);
+}
+
+.scratch-heart-outline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.scratch-heart-outline path {
+  fill: none;
+  stroke: var(--gold-soft);
+  stroke-width: 0.014;
+}
+
+.scratch-reveal {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, var(--cream), var(--blush-soft));
+}
+
+.scratch-reveal-value {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(30px, 9vw, 46px);
+  color: var(--rose-deep);
+}
+
+.scratch-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.scratch-item-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rose-deep);
+  margin: 0;
+  transition: color 0.4s ease;
+}
+
+.scratch-item.is-revealed .scratch-item-label {
+  color: var(--gold);
+}
+
+.scratch-result {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(16px, 3.6vw, 20px);
+  color: var(--ink);
+  text-align: center;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(.22,.98,.36,1);
+}
+
+.scratch-result.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.confetti-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -12px;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  opacity: 0.95;
+  animation-name: confettiFall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes confettiFall {
+  from { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  to   { transform: translateY(115vh) rotate(720deg); opacity: 0.85; }
+}
+
+/* ============================================================
+   Journey section
+   ============================================================ */
+
+.journey-section {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 60px 0;
+  overflow: hidden;
+}
+
+.journey-title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(26px, 6vw, 36px);
+  color: var(--rose-deep);
+  text-align: center;
+  margin: 0;
+  padding: 0 20px;
+}
+
+.journey-track {
+  display: flex;
+  width: 100%;
+  padding: 10px 0 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+}
+
+.journey-track.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+
+.journey-track::-webkit-scrollbar {
+  height: 0;
+}
+
+.polaroid-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: center;
+  padding: 0 28px;
+}
+
+.polaroid {
+  width: clamp(220px, 74vw, 300px);
+  background: #fffefb;
+  padding: 14px 14px 20px;
+  border-radius: 4px;
+  box-shadow: 0 10px 22px rgba(90, 40, 55, 0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  user-select: none;
+}
+
+.polaroid-slide:nth-child(1) .polaroid { transform: rotate(-2deg); }
+.polaroid-slide:nth-child(2) .polaroid { transform: rotate(1.5deg); }
+.polaroid-slide:nth-child(3) .polaroid { transform: rotate(-1.5deg); }
+.polaroid-slide:nth-child(4) .polaroid { transform: rotate(2deg); }
+.polaroid-slide:nth-child(5) .polaroid { transform: rotate(-1deg); }
+
+.polaroid img {
+  width: 100%;
+  aspect-ratio: 1 / 1.05;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.polaroid-caption {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--ink);
+  text-align: center;
+  margin: 0;
+}
+
+.swipe-hint {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: center;
+  margin: 0;
+}
+
+.journey-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.journey-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blush-deep);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.journey-dot.is-active {
+  background: var(--rose-deep);
+  transform: scale(1.35);
+}
+
+/* ============================================================
+   Invitation scene
+   ============================================================ */
+
+#invitation-scene {
+  padding: 0;
+}
+
+.invite-card {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--beige);
+  opacity: 0;
+  transform: scale(0.96) translateY(16px);
+  transition: opacity 1s cubic-bezier(.22,.98,.36,1), transform 1s cubic-bezier(.22,.98,.36,1);
+}
+
+.invite-card.is-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.corner-flourish {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  color: var(--rose);
+  opacity: 0.5;
+  z-index: 2;
+}
+.corner-flourish--tl { top: 18px; left: 18px; }
+.corner-flourish--tr { top: 18px; right: 18px; }
+
+.invite-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 24px 22px 34px;
+  color: var(--ink);
+}
+
+.invite-message,
+.invite-bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.9s cubic-bezier(.22,.98,.36,1), transform 0.9s cubic-bezier(.22,.98,.36,1);
+  transition-delay: calc(var(--d, 0) * 0.15s);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.invite-eyebrow {
+  font-family: var(--font-sans);
+  font-size: clamp(14px, 3.2vw, 16px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin: 0 0 8px;
+}
+
+.invite-names {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(40px, 10.5vw, 60px);
+  line-height: 1.15;
+  margin: 0 0 12px;
+  color: var(--rose-deep);
+}
+
+.invite-names .amp {
+  color: var(--gold);
+  font-size: 0.8em;
+  margin: 0 4px;
+}
+
+.invite-tagline {
+  font-size: clamp(19px, 4.6vw, 23px);
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0 0 16px;
+  color: var(--ink);
+}
+
+.invite-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 70%;
+  max-width: 260px;
+  margin: 0 0 20px;
+}
+
+.invite-divider .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--rose-deep), transparent);
+}
+
+.invite-divider .mark {
+  color: var(--rose);
+  font-size: 20px;
+}
+
+.invite-details {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(169, 79, 102, 0.18);
+  border-radius: 14px;
+  padding: 13px 17px;
+}
+
+.detail-icon {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(169, 79, 102, 0.12);
+  color: var(--rose-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-icon svg { width: 19px; height: 19px; }
+
+.detail-text {
+  text-align: left;
+}
+
+.detail-label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin: 0 0 3px;
+}
+
+.detail-value {
+  font-size: clamp(19px, 4.2vw, 22px);
+  font-weight: 500;
+  margin: 0;
+  color: var(--ink);
+}
+
+.venue-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-serif);
+  font-size: clamp(19px, 4.2vw, 22px);
+  font-weight: 500;
+  color: var(--rose-deep);
+  text-decoration: underline;
+  text-decoration-color: var(--rose);
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.venue-cta-arrow {
+  flex: none;
+}
+
+.venue-cta:hover,
+.venue-cta:focus-visible {
+  color: var(--gold);
+}
+
+.save-date-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--cream);
+  background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+  padding: 14px 28px;
+  border-radius: 999px;
+  box-shadow: 0 10px 22px rgba(169, 79, 102, 0.3);
+  margin-bottom: 22px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.save-date-btn:hover,
+.save-date-btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px rgba(169, 79, 102, 0.4);
+}
+
+.invite-closing {
+  font-size: clamp(16px, 3.6vw, 19px);
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 380px;
+}
+
+/* ============================================================
+   Small screens fine-tuning
+   ============================================================ */
+
+@media (max-height: 640px) {
+  .invite-details { gap: 7px; }
+  .detail { padding: 7px 12px; }
+  .invite-closing { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
