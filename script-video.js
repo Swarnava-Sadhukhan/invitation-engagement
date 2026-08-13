@@ -94,34 +94,70 @@
     scratchHeartsStarted = true;
 
     var scratchedCount = 0;
+    var confettiIntervalId = null;
 
-    function spawnConfetti(container) {
-      if (!container) return;
+    function spawnConfettiPiece(container) {
       var colors = ['#c96f83', '#e6c98a', '#f9dbe1', '#fffaf6', '#a94f66'];
-      var pieces = 70;
+      var piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = (Math.random() * 100) + '%';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      var duration = 2.2 + Math.random() * 1.6;
+      piece.style.animationDuration = duration + 's';
+      piece.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+      container.appendChild(piece);
+      window.setTimeout(function () { piece.remove(); }, duration * 1000 + 100);
+    }
 
-      for (var i = 0; i < pieces; i++) {
-        var piece = document.createElement('div');
-        piece.className = 'confetti-piece';
-        piece.style.left = (Math.random() * 100) + '%';
-        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-        piece.style.animationDuration = (2.2 + Math.random() * 1.6) + 's';
-        piece.style.animationDelay = (Math.random() * 0.5) + 's';
-        piece.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
-        container.appendChild(piece);
+    function startConfettiLoop(container) {
+      if (!container || confettiIntervalId) return;
+
+      for (var i = 0; i < 70; i++) spawnConfettiPiece(container);
+
+      confettiIntervalId = window.setInterval(function () {
+        for (var j = 0; j < 12; j++) spawnConfettiPiece(container);
+      }, 700);
+    }
+
+    function stopConfettiLoop() {
+      if (confettiIntervalId) {
+        window.clearInterval(confettiIntervalId);
+        confettiIntervalId = null;
       }
+    }
 
-      window.setTimeout(function () { container.innerHTML = ''; }, 4200);
+    function watchCountdownExit(section) {
+      if (!section || !('IntersectionObserver' in window)) return;
+      var hasBeenSeen = false;
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            hasBeenSeen = true;
+          } else if (hasBeenSeen) {
+            stopConfettiLoop();
+            observer.unobserve(section);
+          }
+        });
+      }, { threshold: 0 });
+
+      observer.observe(section);
     }
 
     function onAllScratched() {
       var result = document.getElementById('scratchResult');
       var hint = document.getElementById('scratchScrollHint');
       var confettiLayer = document.getElementById('confettiLayer');
+      var countdownSection = document.getElementById('countdownSection');
 
       if (result) result.classList.add('is-visible');
       if (hint) hint.classList.add('is-visible');
-      spawnConfetti(confettiLayer);
+
+      if (countdownSection) countdownSection.classList.remove('is-hidden');
+      startCountdown();
+
+      startConfettiLoop(confettiLayer);
+      watchCountdownExit(countdownSection);
     }
 
     function completeHeart(item, canvas) {
@@ -248,6 +284,55 @@
   }
 
   // ---------------------------------------------------------
+  // Live countdown to the event
+  // ---------------------------------------------------------
+  var countdownStarted = false;
+
+  function startCountdown() {
+    if (countdownStarted) return;
+    countdownStarted = true;
+
+    var daysEl = document.getElementById('cdDays');
+    var hoursEl = document.getElementById('cdHours');
+    var minutesEl = document.getElementById('cdMinutes');
+    var secondsEl = document.getElementById('cdSeconds');
+    if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
+    var targetTime = new Date('2026-11-24T07:30:00Z').getTime();
+
+    function pad(n) {
+      return n < 10 ? '0' + n : String(n);
+    }
+
+    function tick() {
+      var remaining = targetTime - Date.now();
+
+      if (remaining <= 0) {
+        daysEl.textContent = '00';
+        hoursEl.textContent = '00';
+        minutesEl.textContent = '00';
+        secondsEl.textContent = '00';
+        window.clearInterval(intervalId);
+        return;
+      }
+
+      var totalSeconds = Math.floor(remaining / 1000);
+      var days = Math.floor(totalSeconds / 86400);
+      var hours = Math.floor((totalSeconds % 86400) / 3600);
+      var minutes = Math.floor((totalSeconds % 3600) / 60);
+      var seconds = totalSeconds % 60;
+
+      daysEl.textContent = pad(days);
+      hoursEl.textContent = pad(hours);
+      minutesEl.textContent = pad(minutes);
+      secondsEl.textContent = pad(seconds);
+    }
+
+    tick();
+    var intervalId = window.setInterval(tick, 1000);
+  }
+
+  // ---------------------------------------------------------
   // Journey gallery: native touch swipe + mouse drag-to-scroll
   // ---------------------------------------------------------
   function initJourneyDrag() {
@@ -361,9 +446,33 @@
     });
   }
 
+  // ---------------------------------------------------------
+  // Wishes form: submits to a Google Form via a hidden iframe
+  // so the page never navigates away, then shows a thank-you
+  // ---------------------------------------------------------
+  function initWishesForm() {
+    var form = document.getElementById('wishesForm');
+    var frame = document.getElementById('wishesHiddenFrame');
+    var success = document.getElementById('wishesSuccess');
+    if (!form || !frame || !success) return;
+
+    var submitted = false;
+
+    frame.addEventListener('load', function () {
+      if (!submitted) return; // ignore the frame's own initial blank load
+      success.classList.add('is-visible');
+      form.reset();
+    });
+
+    form.addEventListener('submit', function () {
+      submitted = true;
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initVideoIntro();
     initJourneyDrag();
     initSaveDate();
+    initWishesForm();
   });
 })();

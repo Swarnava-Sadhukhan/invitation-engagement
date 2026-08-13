@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Playfair+Display:ital,wght@1,700;1,800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style-video.css">
+<link rel="stylesheet" href="style-video.css?v=2">
 </head>
 <body>
 
@@ -24,7 +24,7 @@
 <!-- ===== VIDEO SCENE ===== -->
 <section id="video-scene" class="scene is-active">
   <div class="video-stage" id="videoStage" role="button" tabindex="0" aria-label="Play to open your invitation">
-    <video class="video-fg" id="introVideo" src="assets/1000342559.mp4" muted playsinline preload="auto"></video>
+    <video class="video-fg" id="introVideo" src="assets/intro-video.mp4" muted playsinline preload="auto"></video>
   </div>
 </section>
 
@@ -109,6 +109,35 @@
     </div>
 
     <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+  </section>
+
+  <!-- Section 2b: live countdown, revealed once all hearts are scratched -->
+  <section class="countdown-section has-card-bg is-hidden" id="countdownSection">
+    <p class="countdown-title reveal" style="--d:0">Counting down to forever</p>
+
+    <div class="countdown-row">
+      <div class="countdown-item reveal" style="--d:1">
+        <span class="countdown-value" id="cdDays">00</span>
+        <span class="countdown-label">Days</span>
+      </div>
+      <div class="countdown-item reveal" style="--d:2">
+        <span class="countdown-value" id="cdHours">00</span>
+        <span class="countdown-label">Hours</span>
+      </div>
+      <div class="countdown-item reveal" style="--d:3">
+        <span class="countdown-value" id="cdMinutes">00</span>
+        <span class="countdown-label">Minutes</span>
+      </div>
+      <div class="countdown-item reveal" style="--d:4">
+        <span class="countdown-value" id="cdSeconds">00</span>
+        <span class="countdown-label">Seconds</span>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span class="scroll-hint-arrow"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg></span>
+      <span class="scroll-hint-text">Scroll down</span>
+    </div>
   </section>
 
   <!-- Section 3: our journey so far -->
@@ -234,8 +263,43 @@
     </div>
   </div>
 
+  <!-- Section 5: wishes / messages -->
+  <section class="wishes-section has-card-bg">
+    <p class="wishes-title reveal" style="--d:0">Send your wishes or messages to us</p>
+
+    <!--
+      This form posts to a Google Form's response endpoint via a hidden iframe,
+      so submissions land directly in a Google Sheet with no backend needed.
+    -->
+    <form class="wishes-form reveal" style="--d:1" id="wishesForm"
+      action="https://docs.google.com/forms/d/e/1FAIpQLSf_kSTIIuUY7wX7Nu-jh1Z-GsI6HbRfbeLEtw4h2GTw50NXpw/formResponse"
+      method="POST" target="wishesHiddenFrame">
+      <label class="wishes-label" for="wishesName">Your Name</label>
+      <input class="wishes-input" type="text" id="wishesName" name="entry.688610559" placeholder="e.g. Priya Sharma" required>
+
+      <label class="wishes-label" for="wishesRelation">Relation to the Couple</label>
+      <select class="wishes-input wishes-select" id="wishesRelation" name="entry.1282829897" required>
+        <option value="" disabled selected>Select one</option>
+        <option value="Family member">Family member</option>
+        <option value="Friend">Friend</option>
+        <option value="Colleague">Colleague</option>
+        <option value="Acquaintance">Acquaintance</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label class="wishes-label" for="wishesMessage">Your Message</label>
+      <textarea class="wishes-textarea" id="wishesMessage" name="entry.205552607" rows="4" placeholder="Write your wishes for the couple..." required></textarea>
+
+      <button class="wishes-submit" type="submit">Send Wishes</button>
+    </form>
+
+    <p class="wishes-success" id="wishesSuccess">Thank you! Your message has been sent. &#128140;</p>
+
+    <iframe name="wishesHiddenFrame" id="wishesHiddenFrame" class="wishes-hidden-frame" title="form submission target" aria-hidden="true"></iframe>
+  </section>
+
 </section>
 
-<script src="script-video.js"></script>
+<script src="script-video.js?v=2"></script>
 </body>
 </html>
